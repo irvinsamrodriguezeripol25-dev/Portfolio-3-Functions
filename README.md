@@ -3,8 +3,6 @@
 ### (I made this program to help me calculate my allowance. I sometimes think in hours and sometimes in days, 
 ### so this program helps me avoid confusion and get the corrected budget per hour or per day automatically.)
 
-#(Function to convert hours into days.)
-
 ```python
 print("=== BUdget Calculator ===")
 ```
@@ -14,15 +12,7 @@ print("=== BUdget Calculator ===")
 
 ```python
 print("Sava: Hello my name is Sava and I'm here to help you manage your daily spending by calculating your weekly budget.")
-print("Sava: Please enter your name, time you'll spend this week and your budget per day.")
-```
-
-### (This is the Function that converts hours to days.)
-
-```python
-def convert_to_days(hours):
-    days = hours / 24
-    return days
+print("Sava: Please enter your name, time you'll spend this week, and your budget per day.")
 ```
 
 ### (This is the Function that compute allowance.)
@@ -56,41 +46,44 @@ else:
 ### (This gets the numbers only.)
 
 ```python
-    try:  
-        value = float(time_input[:-1])
-    except ValueError:
-        print("Sava: Invalid number format. Please enter a valid number followed by 'h' or 'd'.")
-        value = 0
-```
-### (This checks for negative values.)
+try:
+    value = float(time_input[:-1])
 
-```python
     if value < 0:
         print("Sava: Negative values are not allowed.")
-        days = 0
+
+    elif allowance_per_day < 0:
+        print("Sava: Negative allowance is not allowed. Please input a valid number.")
+```
+
+### (This converts hours to days.)
+
+```python
     else:
-        ### (Converts days and hours if needed.)
         if unit == "h":
             days = convert_to_days(value)
+
         elif unit == "d":
             days = value
+
         else:
-            print("Invalid input. Use h for hours or d for days.")
-            days = 0
+            print("Sava: Invalid input. Use h for hours or d for days.")
+            days = None
 ```
 
-### (Computes allowance)
+### (Only calculate if ALL inputs are valid.)
 
 ```python
-total_allowance = compute_allowance(days, allowance_per_day)
-```
+        if unit in ["h", "d"] and allowance_per_day >= 0:
 
-### (Shows the result)
+            total_allowance = compute_allowance(days, allowance_per_day)
 
-```python
-print("=== Calculated Results ===")
+            print("=== Calculated Results ===")
+            print("Sava: Hello,", name + ", Here are the results of my calculations.")
+            print("Equivalent days:", days, "d")
+            print("Total allowance: ₱", total_allowance)
 
-print("Sava: Hello,", name + ", Here are the results of my calculations.")
-print("Equivalent days: Sava: ", days,"d")
-print("Total allowance: Sava: ", "₱",total_allowance)
+
+except ValueError:
+    print("Sava: Invalid number format. Please enter a valid number followed by 'h' or 'd'.")
 ```
